@@ -27,8 +27,10 @@ export default function Profile() {
   const [updatingEventId, setUpdatingEventId] = useState<number | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const router = useRouter();
+  const [likedPosts, setLikedPosts] = useState<any[]>([]);
 
   const fetchUserAndFollowedEvents = async () => {
+    
     const token = await AsyncStorage.getItem("access");
     if (!token) return router.replace("/login");
 
@@ -43,6 +45,11 @@ export default function Profile() {
         setPreview(`${img}?t=${Date.now()}`);
       }
 
+      const resLiked = await fetch(`${API_URL}/clubs/me/liked-posts/`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const likedData = await resLiked.json();
+    setLikedPosts(likedData);
       const resEvents = await fetch(`${API_URL}/events/me/followed-events/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -59,6 +66,7 @@ export default function Profile() {
 
   useEffect(() => {
     fetchUserAndFollowedEvents();
+    
     const interval = setInterval(fetchUserAndFollowedEvents, 5000); // auto-refresh
     return () => clearInterval(interval);
   }, []);
@@ -94,6 +102,7 @@ export default function Profile() {
     return <ActivityIndicator style={{ flex: 1 }} size="large" color="#FFD700" />;
   }
 
+  
   return (
 <ScrollView style={styles.container}>
   {/* Header profil */}
@@ -173,6 +182,21 @@ export default function Profile() {
         contentContainerStyle={{ paddingBottom: 50 }}
       />
     )}
+    <Text style={styles.sectionTitle}>Posts likés</Text>
+
+{likedPosts.length === 0 ? (
+  <Text style={styles.noEventText}>Aucun post liké</Text>
+) : (
+  likedPosts.map((post) => (
+    <View key={post.id} style={styles.eventCard}>
+      <Text style={styles.eventTitle}>{post.title}</Text>
+      <Text style={styles.eventDesc}>{post.content}</Text>
+      <Text style={{ fontSize: 12, color: "#666" }}>
+        📅 {new Date(post.created_at).toLocaleDateString()}
+      </Text>
+    </View>
+  ))
+)}
     </View>
   </View>
 </ScrollView>

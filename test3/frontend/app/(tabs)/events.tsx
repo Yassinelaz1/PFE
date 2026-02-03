@@ -134,14 +134,14 @@ export default function EventsScreen({ onFollowChange }: { onFollowChange?: () =
             data={eventsOfDay}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {
-              const eventDate = new Date(item.date);
-              const time = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+             
+              
 
               return (
                 <View style={styles.eventCard}>
                   <Text style={styles.eventTitle}>{item.title}</Text>
                   <Text>{item.description}</Text>
-                  <Text style={styles.eventTime}>{time}</Text>
+                  
 
                   <TouchableOpacity
                     style={{

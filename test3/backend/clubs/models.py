@@ -42,23 +42,24 @@ class ClubPost(models.Model):
 
     title = models.CharField(max_length=255)
     content = models.TextField()
-    image = models.ImageField(upload_to="club_posts/", blank=True, null=True)
 
     created_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name="club_posts"
     )
-    file = models.FileField(
-        upload_to="club_posts/files/",
-        blank=True,
-        null=True
+
+    liked_by = models.ManyToManyField(
+        User,
+        related_name="liked_posts",
+        blank=True
     )
 
-    is_public = models.BooleanField(default=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
+    def likes_count(self):
+        return self.liked_by.count()
 
     def __str__(self):
-        return f"{self.title} ({self.club.name})"
+        return self.title
+

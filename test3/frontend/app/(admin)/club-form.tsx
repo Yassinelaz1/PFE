@@ -22,13 +22,21 @@ export default function ClubForm() {
 const pickImage = async () => {
   const result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    quality: 0.8,
+    allowsEditing: false,
+    quality: 1,
   });
 
   if (!result.canceled) {
-    setImage(result.assets[0]);
+    const asset = result.assets[0];
+
+    setImage({
+      uri: asset.uri,
+      name: "club.jpg",
+      type: "image/jpeg",
+    });
   }
 };
+
 
 
   const handleDelete = async () => {
@@ -45,6 +53,7 @@ const pickImage = async () => {
   };
 const handleSave = async () => {
   const token = await AsyncStorage.getItem("access");
+
 
   const formData = new FormData();
   formData.append("name", name);

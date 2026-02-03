@@ -112,6 +112,10 @@ export default function ClubScreen() {
             </View>
           </View>
         ))}
+        
+
+
+
       </ScrollView>
     </SafeAreaView>
   );

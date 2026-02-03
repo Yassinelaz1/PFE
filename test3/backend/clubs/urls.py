@@ -3,25 +3,30 @@ from .views import (
     ClubListView,
     ClubDetailView,
     ToggleFollowClubView,
-    ClubPostCreateView,
     ClubPostListView,
+    ClubPostCreateView,
+    ToggleLikePostView,
+    MyLikedPostsView,
     AdminClubListCreateView,
     AdminClubDetailView,
     AdminClubPostDetailView,
 )
 
 urlpatterns = [
-    path("", ClubListView.as_view(), name="club-list"),
-    path("<int:pk>/", ClubDetailView.as_view(), name="club-detail"),
-    path("<int:pk>/follow/", ToggleFollowClubView.as_view(), name="club-follow"),
+    # Public
+    path("", ClubListView.as_view()),
+    path("<int:pk>/", ClubDetailView.as_view()),
+    path("<int:pk>/follow/", ToggleFollowClubView.as_view()),
+    # Posts
+    path("<int:club_id>/posts/", ClubPostListView.as_view()),
+    path("<int:club_id>/posts/create/", ClubPostCreateView.as_view()),
+    # Likes
+    path("posts/<int:pk>/like/", ToggleLikePostView.as_view()),
+    path("me/liked-posts/", MyLikedPostsView.as_view()),
 
-    path("<int:club_id>/posts/", ClubPostListView.as_view(), name="club-posts"),
-    path("<int:club_id>/posts/create/", ClubPostCreateView.as_view(), name="club-post-create"),
-
-    # Admin routes
-    path("admin/clubs/", AdminClubListCreateView.as_view(), name="admin-club-list"),
-    path("admin/clubs/<int:pk>/", AdminClubDetailView.as_view(), name="admin-club-detail"),
-    path("posts/<int:pk>/", AdminClubPostDetailView.as_view(), name="admin-post-detail"),
-    
+    # Admin
+    path("admin/clubs/", AdminClubListCreateView.as_view()),
+    path("admin/clubs/<int:pk>/", AdminClubDetailView.as_view()),
+    path("admin/posts/<int:pk>/", AdminClubPostDetailView.as_view()),
 
 ]

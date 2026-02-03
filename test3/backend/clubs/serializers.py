@@ -5,6 +5,8 @@ from users.models import User
 
 class ClubPostSerializer(serializers.ModelSerializer):
     author_username = serializers.CharField(source="created_by.username", read_only=True)
+    likes_count = serializers.SerializerMethodField()
+    is_liked = serializers.SerializerMethodField()
 
     class Meta:
         model = ClubPost
@@ -12,13 +14,20 @@ class ClubPostSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "content",
-            "image",
-            "file",
-            "created_by",
             "author_username",
+            "likes_count",
+            "is_liked",
             "created_at",
         ]
-        read_only_fields = ["created_by", "created_at"]
+
+    def get_likes_count(self, obj):
+        return obj.liked_by.count()
+
+    def get_is_liked(self, obj):
+        request = self.context.get("request")
+        if not request or request.user.is_anonymous:
+            return False
+        return obj.liked_by.filter(id=request.user.id).exists()
 
 
 class ClubSerializer(serializers.ModelSerializer):

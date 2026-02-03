@@ -37,6 +37,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["192.168.100.126", "localhost", "127.0.0.1", "192.168.1.125."]
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 
 # Application definition
 
