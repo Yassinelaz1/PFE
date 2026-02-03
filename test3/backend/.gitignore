@@ -1,0 +1,51 @@
+# =====================
+# PYTHON
+# =====================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+
+# =====================
+# VENV
+# =====================
+venv/
+.env/
+.env.*
+
+
+# =====================
+# DJANGO
+# =====================
+db.sqlite3
+media/
+staticfiles/
+*.log
+
+
+# =====================
+# MIGRATIONS (optionnel)
+# =====================
+# users/migrations/
+# clubs/migrations/
+# events/migrations/
+
+
+# =====================
+# IDE
+# =====================
+.vscode/
+.idea/
+
+
+# =====================
+# OS
+# =====================
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+db.sqlite3
+media/
+.env
